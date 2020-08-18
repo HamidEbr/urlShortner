@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row py-5">
+    <div class="col-10 mx-auto">
+        <form>
+            <div class="input-group">
+                <input id="originalURL" type="text" class="form-control" name="originalURL" value="" placeholder="Original URL" />
+                <div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-10 mx-auto">
+        <div class="card result hidden">
+            <div class="card-body">
+                <h3 class="p-3 bg-success text-white rounded text-center">
+                    Here is your shortened URL
+                </h3>
+                <h1 id="result" class="text-center p-5">
+                    
+                </h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+
+            var $result = $("#result");
+            $(".result").addClass("hidden");
+
+            var data = JSON.stringify({ originalURL: $("#originalURL").val() });
+            $.ajax({
+                url: '/api/GenerateShortenURL',
+                method: 'post',
+                data: data,
+                contentType: 'application/json',
+                error: function (e) {
+
+                }
+
+            }).then(function (e) {
+                var link = $('<a>', { href: e, text: e, target: '_blank'});
+                $(".result").removeClass("hidden");
+                $result.children().remove();
+
+                $result.append(link);
+            });
+        });
+    </script>
+}

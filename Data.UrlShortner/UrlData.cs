@@ -20,9 +20,9 @@ namespace Data.UrlShortner
 		public string Token { get; set; }
 
 		[Required]
-		public int Visits { get; set; } = 0;
+		public int Visits { get; set; }
 
 		[Required]
-		public DateTime Created { get; set; } = DateTime.Now;
+		public DateTime Created { get; set; }
 	}
 }
