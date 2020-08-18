@@ -1,0 +1,23 @@
+﻿using Data.UrlShortner;
+using Microsoft.EntityFrameworkCore;
+
+namespace Repo.UrlShorner
+{
+    public class UrlShortnerContext : DbContext
+    {
+        public DbSet<UrlData> UrlDatas { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UrlData>().Property(x => x.Id).HasDefaultValueSql("newid()");
+            modelBuilder.Entity<UrlData>().HasIndex(x => x.ShortenedURL).IsUnique();
+            modelBuilder.Entity<UrlData>().HasIndex(x => x.Token).IsUnique();
+            base.OnModelCreating(modelBuilder);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Data Source=.;Initial Catalog=UrlShortner;User ID=sa;Password=1369122");
+        }
+    }
+}
